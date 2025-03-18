@@ -1,29 +1,30 @@
-import CustomButton from '../CustomButton';
-import './index.css';
 import { Button } from 'primereact/button';
+import { Menubar } from 'primereact/menubar';
+import './index.css';
+import { HEADER_NAV_ITEMS } from './constants';
 
-const Header = ({ title}) => {
+const Header = () => {
+
+    const onClick = () => {
+        console.log('Logout')
+    }
+
+    const LogoutButtonTemplate = (
+        <Button
+            onClick={onClick}
+            rounded 
+            icon="pi pi-sign-out" 
+            severity="help" 
+        />
+    )
+    
 
     return (
         <header className="header">
             <div className="container">
-                {/* <Button 
-                    label="Submit" 
-                    icon="pi pi-check" 
-                    iconPos="right"
-                    onClick={onClick}
-                /> */}
-                
-                <CustomButton 
-                    label={'Click me'}
-                    additionalClass={'custom-button'}
-                    handleClick={() => console.log('Клик по кнопке')}
-                />
-
-                <CustomButton 
-                    label={'Click me 2'}
-                    additionalClass={'custom-button'}
-                    handleClick={() => console.log('Клик по кнопке 2')}
+                <Menubar 
+                    model={HEADER_NAV_ITEMS} 
+                    end={LogoutButtonTemplate}
                 />
             </div>
         </header>

@@ -1,13 +1,12 @@
-const CustomButton = ({ label, additionalClass, disabled=false, handleClick }) => {
+export default function CustomButton ({template, children}) {
     return (
-        <button
-            className={`button ${additionalClass}`}
-            disabled={disabled}
-            onClick={handleClick}
+        <div style={{
+                backgroundColor: 'purple',
+                padding: '20px'
+            }}
         >
-            {label}
-        </button>
+            {template}
+            {children}
+        </div>
     )
 }
-
-export default CustomButton

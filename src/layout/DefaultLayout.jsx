@@ -1,13 +1,19 @@
+import { Outlet } from "react-router-dom"
 import Header from "../components/Header"
 
-const DefaultLayout = () => {
+const DefaultLayout = ({children}) => {
     return (
-        <div>
-            <Header
-                title="Пропс title переданный из default layout"
-                subtitle="Пропс subtitle переданный из default layout"
-                onClick={() => console.log('Клик по кнопке')}
-            />
+        <div className="defailt-layout">
+            <Header />
+            <div className="container">
+                <Outlet />
+            </div>
+            {children}
+            <footer>
+                <div className="container">
+                    <p>&copy; All rights reserved</p>
+                </div>
+            </footer>
         </div>
     )
 }
