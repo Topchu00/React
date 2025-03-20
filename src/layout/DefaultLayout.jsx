@@ -11,11 +11,11 @@ const DefaultLayout = ({children}) => {
             {children}
             <footer>
                 <div className="container">
-                    <p>&copy; All rights reserved</p>
+                    <p>&copy; All rights reserved.</p>
                 </div>
             </footer>
         </div>
     )
 }
 
-export default DefaultLayout
+export default DefaultLayout;

@@ -9,6 +9,7 @@ const Header = () => {
         console.log('Logout')
     }
 
+    
     const LogoutButtonTemplate = (
         <Button
             onClick={onClick}
