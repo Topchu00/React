@@ -3,6 +3,9 @@ import Login from "../../pages/Login";
 import MainPage from "../../pages/MainPage";
 import DefaultLayout from "../../layout/DefaultLayout";
 import accessControl from "./pages/accessControl";
+import SettingsPage from "../../pages/AccessControl/SettingsPage";
+import UsersPage from "../../pages/AccessControl/UsersPage";
+import AnilibriaPage from "../../pages/Anilibria";
 
 const router = createBrowserRouter([
     {
@@ -15,9 +18,21 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
+                path: '/',
                 element: <MainPage />
             },
-            ...accessControl,
+            {
+                path: '/users',
+                element: <UsersPage />
+            },
+            {
+                path: '/settings',
+                element: <SettingsPage />
+            },
+            {
+                path: '/anilibria',
+                element: <AnilibriaPage />
+            }
         ]
     }
 ])
