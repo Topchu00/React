@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom"
 import Header from "../components/Header"
+import './index.css'
 
 const DefaultLayout = ({children}) => {
     return (
@@ -10,7 +11,7 @@ const DefaultLayout = ({children}) => {
             </div>
             {children}
             <footer>
-                <div className="container">
+                <div className="footer-container">
                     <p>&copy; All rights reserved.</p>
                 </div>
             </footer>

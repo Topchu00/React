@@ -1,0 +1,40 @@
+.my-container {
+    display: flex;      
+    flex-wrap: wrap;    
+    gap: 10px;          
+}
+
+.myElement {
+    cursor: pointer;
+    font-size: 0.75rem;
+}
+  
+.myElement:hover {
+    opacity: 0.8;
+}
+
+
+.pagination {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pagination a:hover {
+    background-color: #f5f5f5;
+}
+
+.pagination .active a {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
