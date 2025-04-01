@@ -37,14 +37,15 @@ const AnimeDetail = () => {
         <div className='anime-detail-poster'>
             <h2>{anime?.name?.main}</h2>
             <img src={`https://anilibria.top${anime?.poster?.src}`} alt={anime?.name?.main} />
-        </div>
-        <div className="anime-info">
-            {anime.year && <span>Год: {anime.year}</span>}
-            {anime.genres?.length > 0 && (
-                <span>Жанр: {anime.genres.map(g => g.name).join(' ')}</span>
-            )}
-            {anime.type && <span>Тип: {anime.type.description}</span>}
-            {anime.age_rating && <span>Рейтинг: {anime.age_rating.label}</span>}
+        
+            <div className="anime-info">
+                {anime.year && <span>Год: {anime.year}</span>}
+                {anime.genres?.length > 0 && (
+                    <span>Жанр: {anime.genres.map(g => g.name).join(' ')}</span>
+                )}
+                {anime.type && <span>Тип: {anime.type.description}</span>}
+                {anime.age_rating && <span>Рейтинг: {anime.age_rating.label}</span>}
+            </div>
         </div>
         <p>{anime?.description}</p>
     </div>

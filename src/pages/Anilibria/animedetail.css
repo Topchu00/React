@@ -1,10 +1,4 @@
 .anime-detail-container {
-    display: grid;
-    grid-template-areas:
-      "poster info"
-      "description description";
-    grid-template-columns: auto 1fr;
-    gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
@@ -14,10 +8,10 @@
 
 
 .anime-info {
-    grid-area: info;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin: -63% 0 0 43%;
     padding: 63px 15px 15px 15px ;
     border-radius: 8px;
 }
@@ -29,7 +23,7 @@
 
 .anime-detail-container p {
     grid-area: description;
-    margin-top: 20px;
+    margin-top: 35%;
     font-size: 20px;
     line-height: 1.8;
     text-align: justify;
@@ -45,8 +39,13 @@
         grid-template-columns: 1fr;
     }
 
-    .anime-detail-poster {
-        align-items: flex-start;
+    .anime-info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: -15% 0 0 -4%;
+        padding: 63px 15px 15px 15px;
+        border-radius: 8px;
     }
 
     .anime-detail-poster img {
