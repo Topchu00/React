@@ -6,6 +6,8 @@ import accessControl from "./pages/accessControl";
 import SettingsPage from "../../pages/AccessControl/SettingsPage";
 import UsersPage from "../../pages/AccessControl/UsersPage";
 import AnilibriaPage from "../../pages/Anilibria";
+import AnimeDetail from "../../pages/Anilibria/AnimeDetail";
+import ErrorPage from "../../pages/Anilibria/ErrorPage";
 
 const router = createBrowserRouter([
     {
@@ -31,7 +33,13 @@ const router = createBrowserRouter([
             },
             {
                 path: '/anilibria',
-                element: <AnilibriaPage />
+                element: <AnilibriaPage />,
+                errorElement: <ErrorPage />
+            },
+            {
+                path: '/anime/releases/:id',
+                element: <AnimeDetail />,
+                errorElement: <ErrorPage />
             }
         ]
     }

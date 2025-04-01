@@ -1,128 +1,133 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { InputText } from "primereact/inputtext";
-import { useDebounce } from "../../hooks/useDebounce";
-import ReactPaginate from "react-paginate";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { InputText } from 'primereact/inputtext';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { useNavigate } from 'react-router-dom';
+import { Paginator } from 'primereact/paginator';
+import { API_CONFIG } from '../../config/apiConfig';
+import { useDebounce } from '../../hooks/useDebounce';
+import { Link } from 'react-router-dom';
 import './index.css';
 
 const AnimeList = () => {
-    const [animeList, setAnimeList] = useState([]);
-    const [totalPages, setTotalPages] = useState(0);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [search, setSearch] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+  const [animeList, setAnimeList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const debouncedSearch = useDebounce(searchQuery, 500);
+  const navigate = useNavigate();
 
-    const debouncedSearch = useDebounce(search, 300);
-    const itemsPerPage = 10;
+  const getAnimeTitle = (anime) => {
+    if (anime.names?.ru) return anime.names.ru;
+    if (anime.name?.main) return anime.name.main;
+    if (anime.title) return anime.title;
+    return "Без названия";
+  };
 
-    useEffect(() => {
-        const fetchAnime = async () => {
-            try {
-                setIsLoading(true);
-                const params = new URLSearchParams({
-                    page: currentPage + 1, // API может ожидать 1-based индекс
-                    limit: itemsPerPage,
-                    search: debouncedSearch || undefined
-                });
+  const handleAnimeClick = (id) => {
+    navigate(`/anime/${id}`); // Изменяем маршрут
+  };
 
-                const response = await axios.get(
-                    `https://anilibria.top/api/v1/title/search?${params}`
-                );
 
-                setAnimeList(response.data.list || []);
-                setTotalPages(Math.ceil((response.data.pagination?.total_items || 0) / itemsPerPage));
-            } catch (error) {
-                console.error("Ошибка загрузки аниме:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+  useEffect(() => {
+    const controller = new AbortController();
 
-        fetchAnime();
-    }, [debouncedSearch, currentPage]);
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        let url, params = {};
 
-    const handlePageClick = (selectedPage) => {
-        setCurrentPage(selectedPage.selected);
+        if (debouncedSearch) {
+          url = `${API_CONFIG.BASE_URL}/app/search/releases`;
+          params = { query: debouncedSearch, page: currentPage, limit: rowsPerPage };
+        } else {
+          url = `${API_CONFIG.BASE_URL}/anime/catalog/releases`;
+          params = { page: currentPage, limit: rowsPerPage };
+        }
+
+        const response = await axios.get(url, {
+          params,
+          headers: API_CONFIG.HEADERS,
+          signal: controller.signal
+        });
+
+        setAnimeList(debouncedSearch ? response.data : response.data.data || []);
+        setTotalRecords(response.data.meta?.pagination?.total || 0);
+      } catch (error) {
+        if (!axios.isCancel(error)) {
+          console.error('Ошибка загрузки:', error);
+          setAnimeList([]);
+        }
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    return (
-        <div style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: "20px",
-            maxWidth: "1200px",
-            margin: "0 auto",
-        }}>
-            {/* Поле поиска */}
-            <div className="p-inputgroup" style={{ marginBottom: "20px", width: "100%" }}>
-                <span className="p-input-icon-left">
-                    <i className="pi pi-search" />
-                    <InputText
-                        type="text"
-                        placeholder="Поиск аниме..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="p-inputtext-lg"
-                        style={{ width: "100%" }}
-                    />
-                </span>
-            </div>
+    fetchData();
 
-            {/* Состояние загрузки */}
-            {isLoading && <ProgressSpinner style={{width: '50px', height: '50px'}} />}
+    return () => controller.abort();
+  }, [debouncedSearch, currentPage, rowsPerPage]);
 
-            {/* Контейнер списка аниме */}
-            <div style={{ width: "100%", flexGrow: 1 }}>
-                {!isLoading && animeList.length === 0 ? (
-                    <p>Ничего не найдено...</p>
-                ) : (
-                    <ul style={{ listStyle: "none", padding: 0 }}>
-                        {animeList.map((anime) => (
-                            <li
-                                key={anime.id}
-                                style={{
-                                    padding: "15px",
-                                    borderBottom: "1px solid #ddd",
-                                    borderRadius: "5px",
-                                    background: "#fff",
-                                    marginBottom: "10px",
-                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                                }}
-                            >
-                                <h3>{anime.names.ru}</h3>
-                                <p>{anime.description?.slice(0, 150)}...</p>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </div>
+  const onPageChange = (event) => {
+    setCurrentPage(event.page + 1);
+    setRowsPerPage(event.rows);
+  };
 
-            {/* Пагинация */}
-            {totalPages > 1 && (
-                <ReactPaginate
-                    previousLabel={"←"}
-                    nextLabel={"→"}
-                    breakLabel={"..."}
-                    pageCount={totalPages}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={handlePageClick}
-                    containerClassName={"pagination"}
-                    activeClassName={"active"}
-                    forcePage={currentPage}
-                    style={{
-                        display: 'flex',
-                        listStyle: 'none',
-                        padding: 0,
-                        gap: '10px',
-                        marginTop: '20px'
-                    }}
+  return (
+    <div className="anime-container">
+      <div className="search-box">
+        <span className="search-icon pi pi-search" />
+        <InputText
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Поиск аниме..."
+          className="search-input"
+        />
+      </div>
+
+      {isLoading ? (
+        <ProgressSpinner className="loading-spinner" />
+      ) : animeList.length > 0 ? (
+        <>
+          <div className="anime-grid">
+            {animeList.map((anime) => (
+              <Link key={anime.id} to={`/anime/releases/${anime.id}`} className="anime-card">
+                <img
+                  src={`https://anilibria.top${anime.poster?.src}`}
+                  alt={getAnimeTitle(anime)}
+                  className="anime-poster"
                 />
-            )}
-        </div>
-    );
+                <div className="anime-details">
+                  <h3>{getAnimeTitle(anime)}</h3>
+                  <p className="description">
+                    {anime.description?.slice(0, 150) || 'Описание отсутствует'}...
+                  </p>
+                  <div className="anime-meta">
+                    {anime.year && <span>Год: {anime.year}</span>}
+                    {anime.genres?.length > 0 && (
+                      <span>Жанры: {anime.genres.map(g => g.name).join(', ')}</span>
+                    )}
+                    {anime.type && <span>Тип: {anime.type.description}</span>}
+                    {anime.age_rating && <span>Рейтинг: {anime.age_rating.label}</span>}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <Paginator
+            first={(currentPage - 1) * rowsPerPage}
+            rows={rowsPerPage}
+            totalRecords={totalRecords}
+            onPageChange={onPageChange}
+          />
+        </>
+      ) : (
+        <p className="empty-message">Ничего не найдено</p>
+      )}
+    </div>
+  );
 };
 
 export default AnimeList;

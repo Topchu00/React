@@ -1,0 +1,55 @@
+.anime-detail-container {
+    display: grid;
+    grid-template-areas:
+      "poster info"
+      "description description";
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Красивый современный шрифт */
+}
+  
+
+
+.anime-info {
+    grid-area: info;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 63px 15px 15px 15px ;
+    border-radius: 8px;
+}
+
+.anime-info span {
+    font-size: 25px;
+    line-height: 2.5;
+}
+
+.anime-detail-container p {
+    grid-area: description;
+    margin-top: 20px;
+    font-size: 20px;
+    line-height: 1.8;
+    text-align: justify;
+}
+  
+  /* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .anime-detail-container {
+        grid-template-areas:
+        "poster"
+        "info"
+        "description";
+        grid-template-columns: 1fr;
+    }
+
+    .anime-detail-poster {
+        align-items: flex-start;
+    }
+
+    .anime-detail-poster img {
+        max-width: 100%;
+    }
+}

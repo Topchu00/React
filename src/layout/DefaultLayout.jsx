@@ -12,7 +12,6 @@ const DefaultLayout = ({children}) => {
             {children}
             <footer>
                 <div className="footer-container">
-                    <p>&copy; All rights reserved.</p>
                 </div>
             </footer>
         </div>
