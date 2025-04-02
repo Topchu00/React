@@ -1,15 +1,15 @@
 import React from 'react';
 import { Card } from 'primereact/card';
 
-const Main = () => {
+export const MainPage = () => {
     return (
-        <main className="main">
-            <div className="container">   
-                <Card title="Welcome to the Main Page">
-                </Card>
-            </div>
-        </main>
+        <Card title="Simple Card">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae 
+                numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!
+            </p>
+        </Card>
     );
 };
 
-export default Main;
+        

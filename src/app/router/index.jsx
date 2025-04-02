@@ -1,8 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from "../../pages/Login";
-// import MainPage from "../../pages/MainPage"
 import DefaultLayout from "../../layout/DefaultLayout";
 import accessControl from "./page/accessControl";
+import { MainPage } from "../../pages/MainPage/Card";
+import Anilibria from "../../pages/Anilibria";
 
 
 const router = createBrowserRouter([
@@ -16,9 +17,13 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                // element: <MainPage/>
+                element: <MainPage />
             },
             ...accessControl,
+            {
+                path: '/anilibria',
+                element: <Anilibria />
+            }
         ]
     }
 ])
