@@ -1,5 +1,3 @@
-import AnilibiriaService from './api/anilibria.service.js'
+import AnilibriaService from './api/anilibria.service.js'
 
-export {
-    AnilibiriaService,
-}
+export default AnilibriaService;
