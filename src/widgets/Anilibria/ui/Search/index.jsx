@@ -1,23 +1,30 @@
 import React from 'react';
 import { InputText } from 'primereact/inputtext';
 import { FloatLabel } from 'primereact/floatlabel';
-
+import { useSearch } from '../../context/SearchContext';
 import stl from './index.module.css';
 
-const Search = ({ value, onChange }) => {
+const Search = () => {
+    const { searchTerm, setSearchTerm, setIsSearching } = useSearch();
+
+    const handleChange = (value) => {
+        setSearchTerm(value);
+        setIsSearching(!!value);
+    };
+
     return (
         <FloatLabel className={stl.wrapper}>
             <InputText
                 className={stl.input}
                 id="search"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
+                value={searchTerm}
+                onChange={(e) => handleChange(e.target.value)}
             />
             <label htmlFor="search">Поиск по каталогу</label>
-            {value && (
+            {searchTerm && (
                 <button 
                     className={stl.clearBtn} 
-                    onClick={() => onChange('')}
+                    onClick={() => handleChange('')}
                     aria-label="Очистить поиск"
                 >
                     ×
